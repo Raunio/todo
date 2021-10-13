@@ -1,0 +1,27 @@
+version: '3.7'
+
+services:
+  todo:
+    image: todo/todo
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./src:/home/node/app/src
+      - ./nodemon.json:/home/node/app/nodemon.json
+    expose:
+      - '5000'
+    ports:
+      - '5000:5000'
+    command: npm run dev
+  mysql:
+    image: mysql
+    volumes:
+      - "./.data/db:/var/lib/mysql"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: todo
+      MYSQL_USER: user
+      MYSQL_PASSWORD: pass
+    ports:
+      - "42333:3306"

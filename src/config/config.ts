@@ -7,8 +7,8 @@ const SERVER_HOSTNAME = process.env.SERVER_HOSTNAME || 'localhost';
 
 const MYSQL_HOST = process.env.MYSQL_HOST || 'localhost:42333';
 const MYSQL_DATABASE = process.env.MYSQL_DATABASE || 'todo';
-const MYSQL_USER = process.env.MYSQL_USER || 'admin';
-const MYSQL_PASSWORD = process.env.MYSQL_PASSWORD || 'admin';
+const MYSQL_USER = process.env.MYSQL_USER || 'user';
+const MYSQL_PASSWORD = process.env.MYSQL_PASSWORD || 'pass';
 
 const MYSQL = {
     hostname: MYSQL_HOST,
