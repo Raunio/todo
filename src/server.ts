@@ -4,6 +4,7 @@ import logger from './config/logger';
 import config from './config/config';
 import healthRoutes from './routes/health';
 import 'reflect-metadata';
+import { createConnection } from 'typeorm';
 
 const NAMESPACE = 'Server';
 const router = express();
@@ -39,3 +40,5 @@ router.use(express.json());
 
 const httpServer = http.createServer(router);
 httpServer.listen(config.server.port, () => logger.debug(NAMESPACE, `Server running on ${config.server.hostname}:${config.server.port}`));
+
+createConnection();

@@ -1,6 +1,21 @@
 version: '3.7'
 
 services:
+  postgres:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - DB_USER=default_user
+      - DB_PASS=pass
+      - DB_NAME=todo
+    hostname: postgres-local
+    ports:
+      - "5432:5432"
+    volumes:
+      #- ./db/01-init.sh:/docker-entrypoint-initdb.d/01-init.sh
+      - ./db:/docker-entrypoint-initdb.d
   todo:
     image: todo/todo
     build:
@@ -14,14 +29,3 @@ services:
     ports:
       - '5000:5000'
     command: npm run dev
-  mysql:
-    image: mysql
-    volumes:
-      - "./.data/db:/var/lib/mysql"
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: todo
-      MYSQL_USER: user
-      MYSQL_PASSWORD: pass
-    ports:
-      - "42333:3306"
