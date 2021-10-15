@@ -1,21 +1,24 @@
 import { Request, Response, NextFunction } from 'express';
 import * as jwt from 'jsonwebtoken';
 import config from '../config/config';
+import { Account } from '../entity/account';
 
 export const resolveToken = (req: Request, res: Response, next: NextFunction) => {
     // Read token from header
-    const token = <string>req.header('Authorization');
-    let jwtPayload;
+    let token = req.headers.authorization?.split(' ')[1];
 
-    // Try to validate the token and get data
-    try {
-        jwtPayload = <any>jwt.verify(token, config.jwtSecret);
-        res.locals.jwtPayload = jwtPayload;
-    } catch (error) {
-        // If the token could not be validated, respond with 401
-        res.status(401).send();
-        return;
+    if(!token) {
+        return res.status(401).send();
     }
+
+    jwt.verify(token, config.server.token.secret, (error, decoded) => {
+        if(error) {
+            return res.status(401).send();
+        }
+
+        res.locals.jwt = decoded;
+    });
+    
 
     next();
 };

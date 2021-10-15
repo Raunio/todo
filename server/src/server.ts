@@ -2,6 +2,7 @@ import http from 'http';
 import express from 'express';
 import 'reflect-metadata';
 import * as bcrypt from 'bcryptjs';
+import { v4 as uuid } from 'uuid';
 
 import logger from './config/logger';
 import config from './config/config';
@@ -17,7 +18,9 @@ import { Account } from './entity/account';
 createConnection().then(async (connection) => {
     const NAMESPACE = 'Server';
 
-    /** Seed the db */
+    /** Seed the db. This should not be a part of the application code, but let's do it here
+     * cause it's fast
+     */
     const accountRepository = connection.getRepository(Account);
 
     let randomString = (Math.random() + 1).toString(36).substring(7);
@@ -45,12 +48,12 @@ createConnection().then(async (connection) => {
     router.use(express.urlencoded({ extended: false }));
     router.use(express.json());
 
-    /** Log the request */
+    /** Log requests */
     router.use((req, res, next) => {
-        logger.debug(NAMESPACE, `---> ${req.method} | ${req.url}, | ${req.socket.remoteAddress}`);
+        logger.debug(NAMESPACE, `---> ${req.method} |${req.url}, | ${req.socket.remoteAddress}`);
 
         res.on('finish', () => {
-            /** Log the response */
+            /** Log responses */
             logger.debug(NAMESPACE, `<--- ${req.method} | ${req.url} | ${res.statusCode} | ${req.socket.remoteAddress}`);
         });
 

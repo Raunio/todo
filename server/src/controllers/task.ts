@@ -1,8 +1,7 @@
-import { Request, Response, NextFunction, response } from 'express';
+import { Request, Response } from 'express';
 import { getRepository } from 'typeorm';
-import { idText } from 'typescript';
-import logger from '../config/logger';
 
+import logger from '../config/logger';
 import { Task } from '../entity/task';
 
 const NAMESPACE = 'TaskController';
@@ -12,7 +11,7 @@ class TaskController {
 
     static getTasks = async (req: Request, res: Response) => {
         const repository = getRepository(Task);
-        const accountId = res.locals.jwtPayload.accountId;
+        const accountId = res.locals.jwt.accountId;
         let tasks = await repository.find({ where: { account_id: accountId } });
         return res.status(200).json(tasks).send();
     };
@@ -36,17 +35,16 @@ class TaskController {
         }
 
         const repository = getRepository(Task);
-        const accountId = res.locals.jwtPayload.accountId;
+        const accountId = res.locals.jwt.accountId;
         task.account_id = accountId;
 
         try {
             await repository.save(task);
-        }
-        catch(e) {
+        } catch (e) {
             logger.debug(NAMESPACE, 'Error while trying to save task', e);
             return res.status(500).send();
         }
-        
+
         return res.status(200).json(task).send();
     };
 
@@ -57,12 +55,11 @@ class TaskController {
 
         let taskId = req.body.id;
         const repository = getRepository(Task);
-        const accountId = res.locals.jwtPayload.accountId;
+        const accountId = res.locals.jwt.accountId;
 
         try {
             await repository.delete({ id: taskId, account_id: accountId });
-        }
-        catch(e) {
+        } catch (e) {
             logger.debug(NAMESPACE, 'Error while trying to delete task', e);
             return res.status(500).send();
         }

@@ -5,8 +5,11 @@ import * as jwt from 'jsonwebtoken';
 
 import { Account } from '../entity/account';
 import config from '../config/config';
+import logger from '../config/logger';
 
 class LoginController {
+    static NAMESPACE: string = 'LOGIN';
+
     static login = async (req: Request, res: Response) => {
         if (!req.body) {
             return res.status(400).send();
@@ -22,13 +25,16 @@ class LoginController {
         let account: Account = await accountRepository.findOneOrFail({ where: { name } });
 
         if (!bcrypt.compareSync(password, account.password)) {
-            return res.status(401).send();
+            return res.status(401).json('Invalid password').send();
         }
-        // Sing JWT, valid for 1 hour
-        const token = jwt.sign({ accountId: account.id, accountName: account.name }, config.jwtSecret, { expiresIn: '1h' });
 
-        // Send the jwt in the response
-        return res.json({ token }).send();
+        jwt.sign({ accountId: account.id }, config.server.token.secret, { issuer: config.server.token.issuer, algorithm: 'HS256', expiresIn: '1h' }, (error, token) => {
+            if (error || !token) {
+                return res.status(500).send();
+            }
+
+            return res.status(200).json({ token }).send();
+        });
     };
 }
 export default LoginController;
