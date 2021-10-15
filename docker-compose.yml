@@ -14,13 +14,14 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      #- ./db/01-init.sh:/docker-entrypoint-initdb.d/01-init.sh
       - ./db:/docker-entrypoint-initdb.d
   todo:
     image: todo/todo
     build:
       context: .
       dockerfile: Dockerfile
+    environment:
+      - DB_HOST=postgres-local
     volumes:
       - ./src:/home/node/app/src
       - ./nodemon.json:/home/node/app/nodemon.json

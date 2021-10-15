@@ -11,7 +11,8 @@ const SERVER = {
 };
 
 const config = {
-    server: SERVER
+    server: SERVER,
+    jwtSecret: '@QEGTUI'
 };
 
 export default config;
