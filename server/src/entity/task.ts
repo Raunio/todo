@@ -13,8 +13,8 @@ export class Task {
     @Column()
     account_id: number;
 
-    @Column()
-    is_done: boolean;
+    @Column('boolean', {default: false})
+    is_done: boolean = false;
 
     @Column()
     task_description: string;

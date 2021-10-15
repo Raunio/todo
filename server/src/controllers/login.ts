@@ -28,7 +28,7 @@ class LoginController {
         const token = jwt.sign({ accountId: account.id, accountName: account.name }, config.jwtSecret, { expiresIn: '1h' });
 
         // Send the jwt in the response
-        return res.send(token);
+        return res.json({ token }).send();
     };
 }
 export default LoginController;

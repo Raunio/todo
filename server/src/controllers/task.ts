@@ -31,15 +31,22 @@ class TaskController {
             return res.status(400).send();
         }
 
-        if (task.id) {
-            task.id;
+        if (!task.task_description) {
+            return res.status(400).send();
         }
 
         const repository = getRepository(Task);
         const accountId = res.locals.jwtPayload.accountId;
         task.account_id = accountId;
 
-        await repository.save(task);
+        try {
+            await repository.save(task);
+        }
+        catch(e) {
+            logger.debug(NAMESPACE, 'Error while trying to save task', e);
+            return res.status(500).send();
+        }
+        
         return res.status(200).json(task).send();
     };
 
@@ -52,7 +59,14 @@ class TaskController {
         const repository = getRepository(Task);
         const accountId = res.locals.jwtPayload.accountId;
 
-        await repository.delete({ id: taskId, account_id: accountId });
+        try {
+            await repository.delete({ id: taskId, account_id: accountId });
+        }
+        catch(e) {
+            logger.debug(NAMESPACE, 'Error while trying to delete task', e);
+            return res.status(500).send();
+        }
+
         return res.status(200).send();
     };
 }
