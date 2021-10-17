@@ -6,17 +6,27 @@ import authHeader from '../auth/auth.header';
 class TaskService {
     static TASK_ENDPOINT = '/task';
 
-    static getTasks = async () => {
-        return await axios.get(config.SERVICE_URL + this.TASK_ENDPOINT, { headers: { Authorization: authHeader() } });
+    static getTasks = async (token: string) => {
+        // TODO: Validation and error handling
+
+        let response = await axios.get(config.SERVICE_URL + this.TASK_ENDPOINT, { headers: authHeader(token) });
+
+        if (response.status === 200) {
+            return response.data;
+        }
+
+        return '';
     };
 
-    static createOrModifyTask = async (task: Task) => {
-        // Client-side validation should be done here
-
-        return axios.post(config.SERVICE_URL + this.TASK_ENDPOINT, { headers: { Authorization: authHeader() } });
+    static createOrModifyTask = async (token: string, task: Task) => {
+        // TODO: Validation and error handling
+        axios.post(config.SERVICE_URL + this.TASK_ENDPOINT, { headers: authHeader(token) });
     };
 
-    static deleteTask = async (task: Task) => {
-        return axios.delete(config.SERVICE_URL + this.TASK_ENDPOINT, { headers: { Authorization: authHeader() } });
+    static deleteTask = async (token: string, task: Task) => {
+        // TODO: Validation and error handling
+        axios.delete(config.SERVICE_URL + this.TASK_ENDPOINT, { headers: authHeader(token) });
     };
 }
+
+export default TaskService;

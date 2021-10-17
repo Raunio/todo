@@ -30,10 +30,12 @@ export default defineComponent ({
     ...mapMutations(["setUser", "setToken"]),
     async login(e) {
         LoginService.login(this.username, this.password).catch(er => {
-          this.$router.push('login');
+          this.$router.push('login'); // We should also display an error message
         }).then(resp => {
-            this.setUser(resp.data.user);
-            this.setToken(resp.data.token);
+            // TODO: Validation and proper error handling should be implemented
+            console.log(resp.user + '\n' + resp.token);
+            this.setUser(resp.user);
+            this.setToken(resp.token);
 
             this.$router.push('/');
         });

@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import config from '../config/config';
 /** Db ORM entities should not be used as models passed in http requests
  but as one of the strength of using a one language stack is the ability to use the same DTOs in the front end and in the back end, 
@@ -11,8 +11,14 @@ class LoginService {
     static LOGIN_ENDPOINT = '/login';
 
     static login = async (name: string, password: string) => {
+        // TODO: Validation and error handling
+
         try {
-            return await axios.post<LoginResponse>(config.SERVICE_URL + this.LOGIN_ENDPOINT, { name, password });
+            let response: AxiosResponse<LoginResponse> = await axios.post<LoginResponse>(config.SERVICE_URL + this.LOGIN_ENDPOINT, { name, password });
+
+            if (response.status === 200) {
+                return response.data;
+            }
         } catch (e) {
             console.log(e);
         }

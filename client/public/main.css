@@ -1,0 +1,17 @@
+.container {
+    width: 800px;
+    margin: auto;
+}
+
+.task-list {
+    display: flex;
+    width: 100%;
+
+}
+.task-col {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-left: 15px;
+    margin-right: 15px;
+}

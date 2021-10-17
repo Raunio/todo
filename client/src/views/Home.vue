@@ -1,10 +1,14 @@
 <script>
 import { ref } from 'vue'
 import router from '../router/router';
-import { mapGetters } from "vuex";
+import { mapGetters } from 'vuex';
+import TaskList from '../components/TaskList.vue';
 export default {
   computed: {
     ...mapGetters(["isLoggedIn", "getUser"])
+  },
+  components: {
+    TaskList
   }
 };
 //defineProps<{ msg: string }>()
@@ -17,6 +21,7 @@ const count = ref(0)
     Welcome
     <router-link v-if="!isLoggedIn" to="/login"><button>Login</button></router-link>
     <span v-if="isLoggedIn">{{ getUser }}</span>
+    <TaskList v-if="isLoggedIn"></TaskList>
   </div>
 </template>
 
