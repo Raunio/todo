@@ -2,7 +2,7 @@ import http from 'http';
 import express from 'express';
 import 'reflect-metadata';
 import * as bcrypt from 'bcryptjs';
-import { v4 as uuid } from 'uuid';
+import cors from 'cors';
 
 import logger from './config/logger';
 import config from './config/config';
@@ -45,6 +45,13 @@ createConnection().then(async (connection) => {
 
     /** Setup express */
     const router = express();
+
+    const allowedOrigins = ['http://localhost:3000'];
+    const options: cors.CorsOptions = {
+        origin: allowedOrigins
+    };
+
+    router.use(cors(options));
     router.use(express.urlencoded({ extended: false }));
     router.use(express.json());
 
@@ -65,6 +72,10 @@ createConnection().then(async (connection) => {
     router.use('/task', taskRoutes);
     router.use('/login', loginRoutes);
 
-    const httpServer = http.createServer(router);
-    httpServer.listen(config.server.port, () => logger.debug(NAMESPACE, `Server running on ${config.server.hostname}:${config.server.port}`));
+    router.listen(config.server.port, () => {
+        logger.debug(NAMESPACE, `Server running on ${config.server.hostname}:${config.server.port}`);
+    });
+
+    //const httpServer = http.createServer(router);
+    //httpServer.listen(config.server.port, () => logger.debug(NAMESPACE, `Server running on ${config.server.hostname}:${config.server.port}`));
 });

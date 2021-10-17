@@ -33,7 +33,7 @@ class LoginController {
                 return res.status(500).send();
             }
 
-            return res.status(200).json({ token }).send();
+            return res.status(200).json({ user: account.name, token }).send();
         });
     };
 }
