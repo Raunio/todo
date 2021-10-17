@@ -7,7 +7,7 @@ const authHeader = () => {
     try {
         return 'Bearer ' + JSON.parse(token);
     } catch (e) {
-        console.log(`Error while parsing token ${token}`);
+        console.log(`Error while parsing token ${token}\n${e}`);
     }
 
     return '';
