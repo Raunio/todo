@@ -1,17 +1,61 @@
 .container {
-    width: 800px;
-    margin: auto;
+    max-width: 90%;
+    margin: 0 auto;
+    padding: 0 30px;
+    position: relative;
 }
-
 .task-list {
-    display: flex;
     width: 100%;
-
 }
-.task-col {
+
+.task-single {
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin-left: 15px;
-    margin-right: 15px;
+    width: 1000px;
+    margin: 0 auto;
+    height: 30px;
+}
+
+@media only screen and (max-width: 1700px) {
+    .task-single {
+        width: 750px;
+    }
+}
+
+@media only screen and (max-width: 900px) {
+    .task-single {
+        width: 450px;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .task-single {
+        width: 300px;
+    }
+}
+
+.task-col {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.task-col-left {
+    width: 10%;
+}
+
+.task-col-middle {
+    width: 80%;
+}
+
+.task-col-right {
+    width: 10%;
+}
+
+.task-description-text {
+    width: 100%;
+    box-sizing: border-box;
+    border: none;
+    resize: none;
+    min-height: 25px;
+    overflow-y: auto;
+    word-wrap:break-word
 }

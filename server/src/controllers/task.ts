@@ -13,6 +13,7 @@ class TaskController {
         const repository = getRepository(Task);
         const accountId = res.locals.jwt.accountId;
         let tasks = await repository.find({ where: { account_id: accountId } });
+        tasks.sort((a, b) => (a.id > b.id ? 1 : -1));
         return res.status(200).json(tasks).send();
     };
 

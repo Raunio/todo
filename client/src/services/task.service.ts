@@ -20,12 +20,13 @@ class TaskService {
 
     static createOrModifyTask = async (token: string, task: Task) => {
         // TODO: Validation and error handling
-        axios.post(config.SERVICE_URL + this.TASK_ENDPOINT, { headers: authHeader(token) });
+        axios.post(config.SERVICE_URL + this.TASK_ENDPOINT, task, { headers: authHeader(token) });
     };
 
     static deleteTask = async (token: string, task: Task) => {
         // TODO: Validation and error handling
-        axios.delete(config.SERVICE_URL + this.TASK_ENDPOINT, { headers: authHeader(token) });
+        console.log(task);
+        axios.delete(config.SERVICE_URL + this.TASK_ENDPOINT, { data: task, headers: authHeader(token) });
     };
 }
 
