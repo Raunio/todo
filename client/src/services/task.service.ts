@@ -6,10 +6,10 @@ import authHeader from '../auth/auth.header';
 class TaskService {
     static TASK_ENDPOINT = '/task';
 
-    static getTasks = async (token: string) => {
+    static getTasks = async (filter: string) => {
         // TODO: Validation and error handling
 
-        let response = await axios.get(config.SERVICE_URL + this.TASK_ENDPOINT, { headers: authHeader(token) });
+        let response = await axios.get(`${config.SERVICE_URL}${this.TASK_ENDPOINT}?filter=${filter}`, { headers: authHeader() });
 
         if (response.status === 200) {
             return response.data;
@@ -18,15 +18,20 @@ class TaskService {
         return '';
     };
 
-    static createOrModifyTask = async (token: string, task: Task) => {
+    static createOrModifyTask = async (task: Task) => {
         // TODO: Validation and error handling
-        axios.post(config.SERVICE_URL + this.TASK_ENDPOINT, task, { headers: authHeader(token) });
+        let response = await axios.post(config.SERVICE_URL + this.TASK_ENDPOINT, task, { headers: authHeader() });
+
+        if (response.status === 200) {
+            return response.data;
+        }
+
+        return '';
     };
 
-    static deleteTask = async (token: string, task: Task) => {
+    static deleteTask = async (task: Task) => {
         // TODO: Validation and error handling
-        console.log(task);
-        axios.delete(config.SERVICE_URL + this.TASK_ENDPOINT, { data: task, headers: authHeader(token) });
+        axios.delete(config.SERVICE_URL + this.TASK_ENDPOINT, { data: task, headers: authHeader() });
     };
 }
 
