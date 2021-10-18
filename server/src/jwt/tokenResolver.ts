@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import * as jwt from 'jsonwebtoken';
 import config from '../config/config';
-import { Account } from '../entity/account';
 
 export const resolveToken = (req: Request, res: Response, next: NextFunction) => {
     // Read token from header
@@ -9,15 +8,14 @@ export const resolveToken = (req: Request, res: Response, next: NextFunction) =>
 
     if (!token) {
         return res.status(401).send();
+    } else {
+        jwt.verify(token, config.server.token.secret, (error, decoded) => {
+            if (error) {
+                return res.status(401).send();
+            }
+
+            res.locals.jwt = decoded;
+            next();
+        });
     }
-
-    jwt.verify(token, config.server.token.secret, (error, decoded) => {
-        if (error) {
-            return res.status(401).send();
-        }
-
-        res.locals.jwt = decoded;
-    });
-
-    next();
 };
