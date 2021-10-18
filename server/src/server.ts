@@ -18,8 +18,8 @@ import { Account } from './entity/account';
 createConnection().then(async (connection) => {
     const NAMESPACE = 'Server';
 
-    /** Seed the db. This should not be a part of the application code, but let's do it here
-     * cause it's fast
+    /** Seed the db.
+     * TODO: This should not be a part of application code
      */
     const accountRepository = connection.getRepository(Account);
 
@@ -28,7 +28,7 @@ createConnection().then(async (connection) => {
 
     let account1 = new Account();
     account1.id = 1;
-    account1.name = 'niko.tiikkaja';
+    account1.name = 'maija.mallikas';
     account1.password = bcrypt.hashSync(randomString, 8);
     accountRepository.save(account1);
 
@@ -54,6 +54,12 @@ createConnection().then(async (connection) => {
     router.use(cors(options));
     router.use(express.urlencoded({ extended: false }));
     router.use(express.json());
+    /**
+     * Application code was not compatible with etag based caching ([ERR_HTTP_HEADERS_SENT])
+     * So instead of refactoring the code or implementing a 'proper' caching system, I decided
+     * to just disable etag
+     */
+    router.disable('etag');
 
     /** Log requests */
     router.use((req, res, next) => {
@@ -75,7 +81,4 @@ createConnection().then(async (connection) => {
     router.listen(config.server.port, () => {
         logger.debug(NAMESPACE, `Server running on ${config.server.hostname}:${config.server.port}`);
     });
-
-    //const httpServer = http.createServer(router);
-    //httpServer.listen(config.server.port, () => logger.debug(NAMESPACE, `Server running on ${config.server.hostname}:${config.server.port}`));
 });
