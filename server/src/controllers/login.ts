@@ -22,7 +22,14 @@ class LoginController {
 
         //Get user from database
         const accountRepository = getRepository(Account);
-        let account: Account = await accountRepository.findOneOrFail({ where: { name } });
+        let account: Account;
+
+        try {
+            account = await accountRepository.findOneOrFail({ where: { name } });
+        } catch (e) {
+            logger.debug(this.NAMESPACE, `Could not find account with name ${name}`, e);
+            return res.status(404).send();
+        }
 
         if (!bcrypt.compareSync(password, account.password)) {
             return res.status(401).json('Invalid password').send();
