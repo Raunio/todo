@@ -8,9 +8,6 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=password
-      - DB_USER=default_user
-      - DB_PASS=pass
-      - DB_NAME=todo
     hostname: postgres-local
     ports:
       - "5432:5432"
