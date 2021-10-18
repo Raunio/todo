@@ -11,8 +11,18 @@ class TaskController {
 
     static getTasks = async (req: Request, res: Response) => {
         const repository = getRepository(Task);
-        const accountId = res.locals.jwt.accountId;
-        let tasks = await repository.find({ where: { account_id: accountId } });
+        const accountId = res.locals.jwt.accountId; // TODO: validate
+
+        let tasks: Task[];
+        if (req.query.filter && req.query.filter !== 'all') {
+            let filterValue = req.query.filter === 'completed' ? true : false;
+            tasks = await repository.find({ where: { account_id: accountId, is_done: filterValue } });
+        } else {
+            tasks = await repository.find({ where: { account_id: accountId } });
+        }
+
+        /** Results from db seemed to be ordered by time of modification,
+         * so we sort the result by id which is basically the same thing as sorting by time of creation */
         tasks.sort((a, b) => (a.id > b.id ? 1 : -1));
         return res.status(200).json(tasks).send();
     };
