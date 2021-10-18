@@ -2,6 +2,7 @@ version: '3.7'
 
 services:
   postgres:
+    container_name: postgres
     image: postgres
     restart: always
     environment:
@@ -15,8 +16,9 @@ services:
       - "5432:5432"
     volumes:
       - ./db:/docker-entrypoint-initdb.d
-  todo:
-    image: todo/todo
+  server:
+    container_name: todo-server
+    image: todo/server
     build:
       context: .
       dockerfile: Dockerfile
