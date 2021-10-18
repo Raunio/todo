@@ -4,8 +4,9 @@
     padding: 0 30px;
     position: relative;
 }
-.task-list {
+.task-list, .task-input {
     width: 100%;
+    margin-bottom: 25px;
 }
 
 .task-single {
@@ -13,6 +14,12 @@
     width: 1000px;
     margin: 0 auto;
     height: 30px;
+}
+
+.task-inputs {
+    margin: 0 auto;
+    display: flex;
+    width: 50%;
 }
 
 @media only screen and (max-width: 1700px) {
@@ -25,11 +32,19 @@
     .task-single {
         width: 450px;
     }
+
+    .task-inputs {
+        width: 75%;
+    }
 }
 
 @media only screen and (max-width: 600px) {
     .task-single {
         width: 300px;
+    }
+
+    .task-inputs {
+        width: 100%;
     }
 }
 
@@ -44,6 +59,7 @@
 
 .task-col-middle {
     width: 80%;
+    padding-bottom: 5px;
 }
 
 .task-col-right {
@@ -57,5 +73,30 @@
     resize: none;
     min-height: 25px;
     overflow-y: auto;
-    word-wrap:break-word
+    word-wrap:break-word;
+    height: 100%;
+}
+
+.filter-bar {
+    margin-bottom: 25px;
+}
+
+.add-task-textarea {
+    margin-left: 10%;
+    margin-right: 10px;
+}
+
+a, .link-button {
+    background: none!important;
+    border: none;
+    padding: 0!important;
+    /*input has OS specific font-family*/
+    color: #069;
+    cursor: pointer;
+}
+
+.new-task-button {
+    border-radius: 25%;
+    padding: 0 10px;
+    border: none;
 }
